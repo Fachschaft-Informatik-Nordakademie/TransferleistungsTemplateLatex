@@ -1,0 +1,95 @@
+\documentclass[12pt,bibtotoc]{article}
+\usepackage[table]{xcolor}
+\usepackage[ngerman]{babel} % Für Silbentrennung
+\usepackage[utf8]{inputenc} % Um Umlaute und Sonderzeichen nutzen zu können
+\usepackage[a4paper,
+lmargin={2cm},
+rmargin={2cm},
+tmargin={2cm},
+bmargin={3cm}]{geometry} % Für das Layout
+\usepackage{setspace} % Für den Zeilenabstand
+\setstretch{1.25}
+\usepackage{graphicx} % Um Bilder einzufügen
+\usepackage{wrapfig} % Um Bilder im Fließtext einzubinden
+\usepackage{csquotes} % Um Text in Anführungsstriche zu setzen
+\usepackage{mathptmx} % Ähnlich zu Times New Roman
+\usepackage{fancyhdr} % Um den Header einzufügen
+\usepackage{pdfpages} % Um die Titelseite einbinden
+\usepackage{hyperref} % Um Verlinkungen einfügen
+\usepackage{acronym} % Um Akronyme zu definieren
+\usepackage{textcomp} % Um spezielle Zeichen verwenden zu können (z.B. °, µ)
+\usepackage{subcaption} % Um mehrere Bilder zusammen einzustellen und Links zu Abbildungen zu korrigieren
+
+
+\usepackage[backend=bibtex, citestyle=ieee]{biblatex} % Um Literatur einzufügen
+\bibliography{Quellenverzeichnis}
+
+\pagestyle{fancy}
+\fancyhf{}
+\setlength\headheight{42.0pt}
+\renewcommand{\headrulewidth}{0pt} % Um schwarze Linie zu entfernen
+\chead{\includegraphics[width=\textwidth]{Resources/header.png}} % Grafik einfügen
+\cfoot{\thepage}
+
+\newcounter{romanBeginningEnd} % Um Römische Seitenzahl zu speichern
+
+% Sektionen refernezen anpassen
+\addto\extrasngerman{%
+	\renewcommand{\sectionautorefname}{siehe}%
+	\let\subsectionautorefname\sectionautorefname%
+	\let\subsubsectionautorefname\sectionautorefname%
+}
+
+
+
+\begin{document}
+    \pagenumbering{gobble}
+    \include{cover}
+
+	%\includepdf[pages=-]{Resources/cover}
+	
+	\setcounter{page}{1} % Römische Seitenzahlen
+	\pagenumbering{Roman}
+	
+	\tableofcontents %Inhaltsverzeichnis
+	\newpage
+	
+	\setcounter{secnumdepth}{0} % Keine Numerierung von Überschriften
+	\clearpage
+	\phantomsection
+	\addcontentsline{toc}{section}{\listfigurename} % Abbildungsverzeichnis im Inhaltsverzeichnis anzeigen
+	\listoffigures
+	\clearpage
+	\phantomsection
+	\addcontentsline{toc}{section}{\listtablename} % Abbildungsverzeichnis im Inhaltsverzeichnis anzeigen
+	\listoftables
+	\newpage
+	\section{Abkürzungsverzeichnis}
+	% Abkürzungen
+	\begin{acronym}[LängsteAbkürzung] % Für Formatierung längste Abkürzung eintragen
+		\acro{ac:Label}[Abkürzung]{LangForm}
+	\end{acronym}
+	\newpage
+	
+	\setcounter{secnumdepth}{3} % Überschriften wieder numerieren
+	
+	\setcounter{romanBeginningEnd}{\the\value{page}} % Speichern der römischen Seitenzahl
+	\setcounter{page}{1} % Mit Arabischen Seitenzahlen wieder bei 1 anfangen
+	\pagenumbering{arabic}
+	
+	% ###############################################################
+	% Hier Inhalt einfügen
+	\input{Content/Beispiel}
+	% ###############################################################
+	
+	\newpage
+	\pagenumbering{Roman}
+	\setcounter{page}{\theromanBeginningEnd} % Römische Seitenzahlen fortsetzen
+	\setcounter{secnumdepth}{0} % Nummerierung der Überschriften entfernt
+	\section{Quellenverzeichnis}
+	\setcounter{secnumdepth}{3} % Überschriften wieder numerieren (Für den Anhang)
+	\printbibliography[heading=none]
+	\newpage
+	\input{Content/Anhang}
+
+\end{document}
